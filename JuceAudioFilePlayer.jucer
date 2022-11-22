@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT name="JuceAudioFilePlayer" companyName="iliketobuildthings" version="1.0.0"
-              userNotes="Plays audio files." projectType="guiapp" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="1" id="gYzxZn" jucerFormatVersion="1"
-              displaySplashScreen="1">
+<JUCERPROJECT name="JuceAudioFilePlayer" version="1.0.0" userNotes="Plays audio files( on mobile devices too)."
+              projectType="guiapp" useAppConfig="0" addUsingNamespaceToJuceHeader="1"
+              id="gYzxZn" jucerFormatVersion="1" displaySplashScreen="1">
   <MAINGROUP id="RbAYSN" name="JuceAudioFilePlayer">
     <GROUP id="{59E4BBC5-6B8B-5BA2-36DD-6E138EBF90D2}" name="Source">
       <FILE id="jUfN5T" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
@@ -28,9 +27,9 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="PlayingSoundFilesTutorial"
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="JuceAudioFilePlayer"
                        macOSDeploymentTarget="10.13" osxCompatibility="10.13 SDK"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="PlayingSoundFilesTutorial"
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="JuceAudioFilePlayer"
                        macOSDeploymentTarget="10.13" osxCompatibility="10.13 SDK"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
@@ -49,8 +48,8 @@
     </XCODE_MAC>
     <VS2019 targetFolder="Builds/VisualStudio2019">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="PlayingSoundFilesTutorial"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="PlayingSoundFilesTutorial"/>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="JuceAudioFilePlayer"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="JuceAudioFilePlayer"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path=""/>
@@ -68,8 +67,8 @@
     </VS2019>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="PlayingSoundFilesTutorial"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="PlayingSoundFilesTutorial"/>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="JuceAudioFilePlayer"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="JuceAudioFilePlayer"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path=""/>
@@ -85,8 +84,8 @@
         <MODULEPATH id="juce_gui_extra" path=""/>
       </MODULEPATHS>
     </LINUX_MAKE>
-    <XCODE_IPHONE targetFolder="Builds/iOS" iosDevelopmentTeamID="JQK8VU2G3P" microphonePermissionNeeded="1"
-                  iosBackgroundAudio="1" UISupportsDocumentBrowser="1" UIFileSharingEnabled="1">
+    <XCODE_IPHONE targetFolder="Builds/iOS" microphonePermissionNeeded="1" iosBackgroundAudio="1"
+                  UISupportsDocumentBrowser="1" UIFileSharingEnabled="1">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" iosDeploymentTarget="12.0" iosCompatibility="12.0"
                        recommendedWarnings="LLVM"/>
