@@ -15,12 +15,12 @@ public:
     //==============================================================================
     Application() = default;
 
-    const juce::String getApplicationName() override       { return "PlayingSoundFilesTutorial"; }
+    const juce::String getApplicationName() override       { return ProjectInfo::projectName; }
     const juce::String getApplicationVersion() override    { return "1.0.0"; }
 
     void initialise (const juce::String&) override
     {
-        mainWindow.reset (new MainWindow ("PlayingSoundFilesTutorial", new MainComponent, *this));
+        mainWindow.reset (new MainWindow (getApplicationName(), new MainComponent, *this));
     }
 
     void shutdown() override                         { mainWindow = nullptr; }
