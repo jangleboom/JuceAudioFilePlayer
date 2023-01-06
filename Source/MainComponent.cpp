@@ -138,7 +138,7 @@ void MainComponent::paintIfNoFileLoaded (juce::Graphics& g, const juce::Rectangl
 
 void MainComponent::paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
 {
-    g.setColour (juce::Colours::white);
+    g.setColour (juce::Colours::darkgrey);
     g.fillRect (thumbnailBounds);
 
     g.setColour (juce::Colours::red);
@@ -152,7 +152,7 @@ void MainComponent::paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<
 
 void MainComponent::paintMonoIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
 {
-    g.setColour (juce::Colours::white);
+    g.setColour (juce::Colours::darkgrey);
     g.fillRect (thumbnailBounds);
 
     g.setColour (juce::Colours::red);
