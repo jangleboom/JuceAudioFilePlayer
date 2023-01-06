@@ -2,7 +2,9 @@
 
 
 MainComponent::MainComponent()
-    : state (Stopped)
+    :   state (Stopped),
+        thumbnailCache (5),
+        thumbnail (512, formatManager, thumbnailCache)
 {
     addAndMakeVisible (&openButton);
     openButton.setButtonText ("Open");
@@ -26,11 +28,17 @@ MainComponent::MainComponent()
 
     addAndMakeVisible (&currentPositionLabel);
     currentPositionLabel.setText ("Stopped", juce::dontSendNotification);
+    
+    addAndMakeVisible (&currentAudioFileNameLabel);
+    currentAudioFileNameLabel.setText ("", juce::dontSendNotification);
 
     setSize (300, 200);
 
     formatManager.registerBasicFormats();
     transportSource.addChangeListener (this);
+    
+    // Register to Thumbnail broadcaster
+    thumbnail.addChangeListener (this);
 
     setAudioChannels (0, 2);
     startTimer (1000);
@@ -65,32 +73,101 @@ void MainComponent::releaseResources()
 void MainComponent::resized()
 {
 #if defined JUCE_IOS || defined JUCE_ANDROID
-    openButton          .setBounds (20, 70,  getWidth() - 40, 40);
-    playButton          .setBounds (20, 120, getWidth() - 40, 40);
-    stopButton          .setBounds (20, 170, getWidth() - 40, 40);
-    loopingToggle       .setBounds (20, 220, getWidth() - 40, 40);
-    currentPositionLabel.setBounds (20, 250, getWidth() - 40, 40);
+    openButton          .setBounds      (20, 70,  getWidth() - 40, 40);
+    playButton          .setBounds      (20, 120, getWidth() - 40, 40);
+    stopButton          .setBounds      (20, 170, getWidth() - 40, 40);
+    loopingToggle       .setBounds      (20, 220, getWidth() - 40, 40);
+    currentPositionLabel.setBounds      (20, 250, getWidth() - 40, 40);
+    currentAudioFileNameLabel.setBounds (80, 250, getWidth() - 20, 20);
 #else
-    openButton          .setBounds (10, 10,  getWidth() - 20, 20);
-    playButton          .setBounds (10, 40,  getWidth() - 20, 20);
-    stopButton          .setBounds (10, 70,  getWidth() - 20, 20);
-    loopingToggle       .setBounds (10, 100, getWidth() - 20, 20);
-    currentPositionLabel.setBounds (10, 130, getWidth() - 20, 20);
+    openButton          .setBounds      (10, 10,  getWidth() - 20, 20);
+    playButton          .setBounds      (10, 40,  getWidth() - 20, 20);
+    stopButton          .setBounds      (10, 70,  getWidth() - 20, 20);
+    loopingToggle       .setBounds      (10, 100, getWidth() - 20, 20);
+    currentPositionLabel.setBounds      (10, 130, getWidth() - 20, 20);
+    currentAudioFileNameLabel.setBounds (80, 130, getWidth() - 20, 20);
 #endif
 }
 
 void MainComponent::changeListenerCallback (juce::ChangeBroadcaster* source)
 {
+    if (source == &transportSource) transportSourceChanged();
+    if (source == &thumbnail)       thumbnailChanged();
+}
 
-    if (source == &transportSource)
+void MainComponent::transportSourceChanged()
+{
+    if (transportSource.isPlaying())
+        changeState (Playing);
+    else if ((state == Stopping) || (state == Playing))
+        changeState (Stopped);
+    else if (Pausing == state)
+        changeState (Paused);
+}
+
+void MainComponent::thumbnailChanged()
+{
+    repaint();
+}
+
+void MainComponent::paint (juce::Graphics& g)
+{
+    juce::Rectangle<int> thumbnailBounds (10, 150, getWidth() - 20, getHeight() - 170);
+
+    if (thumbnail.getNumChannels() == 0)
+        paintIfNoFileLoaded (g, thumbnailBounds);
+    else
     {
-        if (transportSource.isPlaying())
-            changeState (Playing);
-        else if ((state == Stopping) || (state == Playing))
-            changeState (Stopped);
-        else if (Pausing == state)
-            changeState (Paused);
+        // paintIfFileLoaded (g, thumbnailBounds);
+        paintMonoIfFileLoaded (g, thumbnailBounds);
     }
+        
+}
+
+void MainComponent::paintIfNoFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
+{
+    g.setColour (juce::Colours::darkgrey);
+    g.fillRect (thumbnailBounds);
+    g.setColour (juce::Colours::white);
+    g.drawFittedText ("No File Loaded", thumbnailBounds, juce::Justification::centred, 0.8);
+}
+
+void MainComponent::paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
+{
+    g.setColour (juce::Colours::white);
+    g.fillRect (thumbnailBounds);
+
+    g.setColour (juce::Colours::red);
+
+    thumbnail.drawChannels (g,
+                            thumbnailBounds,
+                            0.0,                                    // start time
+                            thumbnail.getTotalLength(),             // end time
+                            0.8f);                                  // vertical zoom
+}
+
+void MainComponent::paintMonoIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
+{
+    g.setColour (juce::Colours::white);
+    g.fillRect (thumbnailBounds);
+
+    g.setColour (juce::Colours::red);
+
+    thumbnail.drawChannel (g,
+                            thumbnailBounds,
+                            0.0,                                    // start time
+                            thumbnail.getTotalLength(),             // end time
+                            0,
+                            0.8f);                                  // vertical zoom
+    
+    auto audioLength = (float) thumbnail.getTotalLength();
+    g.setColour (juce::Colours::green);
+
+    auto audioPosition = (float) transportSource.getCurrentPosition();
+    auto drawPosition = (audioPosition / audioLength) * (float) thumbnailBounds.getWidth()
+                        + (float) thumbnailBounds.getX();
+    g.drawLine (drawPosition, (float) thumbnailBounds.getY(), drawPosition,
+                (float) thumbnailBounds.getBottom(), 2.0f);
 }
 
 void MainComponent::timerCallback()
@@ -104,6 +181,8 @@ void MainComponent::timerCallback()
         auto positionString = juce::String::formatted ("%02d:%02d", minutes, seconds);
 
         currentPositionLabel.setText (positionString, juce::dontSendNotification);
+        
+        repaint();
     }
     else
     {
@@ -193,9 +272,14 @@ void MainComponent::openButtonClicked()
             if (reader != nullptr)
             {
                 DBG("reader != nullptr");
+                // Then grab the file name
+                currentAudioFileName = file.getFileNameWithoutExtension();
+                currentAudioFileNameLabel.setText(currentAudioFileName, juce::dontSendNotification);
+                
                 auto newSource = std::make_unique<juce::AudioFormatReaderSource> (reader, true);
                 transportSource.setSource (newSource.get(), 0, nullptr, reader->sampleRate);
                 playButton.setEnabled (true);
+                thumbnail.setSource (new juce::FileInputSource (file));
                 readerSource.reset (newSource.release());
             }
             else
@@ -206,6 +290,7 @@ void MainComponent::openButtonClicked()
             }
         }
     });
+    
 }
 
 void MainComponent::playButtonClicked()
