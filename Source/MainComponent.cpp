@@ -78,7 +78,7 @@ void MainComponent::resized()
     stopButton          .setBounds      (20, 170, getWidth() - 40, 40);
     loopingToggle       .setBounds      (20, 220, getWidth() - 40, 40);
     currentPositionLabel.setBounds      (20, 250, getWidth() - 40, 40);
-    currentAudioFileNameLabel.setBounds (80, 250, getWidth() - 20, 20);
+    currentAudioFileNameLabel.setBounds (80, 250, getWidth() - 40, 40);
 #else
     openButton          .setBounds      (10, 10,  getWidth() - 20, 20);
     playButton          .setBounds      (10, 40,  getWidth() - 20, 20);
@@ -112,8 +112,12 @@ void MainComponent::thumbnailChanged()
 
 void MainComponent::paint (juce::Graphics& g)
 {
-    juce::Rectangle<int> thumbnailBounds (10, 150, getWidth() - 20, getHeight() - 170);
-
+#if defined JUCE_IOS || defined JUCE_ANDROID
+    juce::Rectangle<int> thumbnailBounds (20, 300, getWidth() - 40, getHeight() - 350);
+#else
+    juce::Rectangle<int> thumbnailBounds (10, 250, getWidth() - 20, getHeight() - 170);
+#endif
+    
     if (thumbnail.getNumChannels() == 0)
         paintIfNoFileLoaded (g, thumbnailBounds);
     else
@@ -129,7 +133,7 @@ void MainComponent::paintIfNoFileLoaded (juce::Graphics& g, const juce::Rectangl
     g.setColour (juce::Colours::darkgrey);
     g.fillRect (thumbnailBounds);
     g.setColour (juce::Colours::white);
-    g.drawFittedText ("No File Loaded", thumbnailBounds, juce::Justification::centred, 0.8);
+    g.drawFittedText ("No File Loaded", thumbnailBounds, juce::Justification::centred, 0);
 }
 
 void MainComponent::paintIfFileLoaded (juce::Graphics& g, const juce::Rectangle<int>& thumbnailBounds)
@@ -244,6 +248,8 @@ void MainComponent::openButtonClicked()
     String path = audioFile.getFullPathName();
     DBG("path: ");DBG(path);
 */
+    if (state != Stopped) stopButtonClicked();
+    
     chooser = std::make_unique<juce::FileChooser> ("Select a sound file to play...",
                                                    juce::File{},
                                                    "*.wav;*.aif;*.aiff;*.mp3");
