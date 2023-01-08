@@ -16,11 +16,9 @@ class SimplePositionOverlay : public juce::Component,
                               private juce::Timer
 {
 public:
-    SimplePositionOverlay (const juce::AudioTransportSource& transportSourceToUse)
+    SimplePositionOverlay (juce::AudioTransportSource& transportSourceToUse)
        : transportSource (transportSourceToUse)
     {
-        addAndMakeVisible (&currentPositionLabel);
-        currentPositionLabel.setText ("Stopped", juce::dontSendNotification);
         startTimer (40);
     }
 
@@ -41,7 +39,18 @@ public:
     }
     
     
+    void mouseDown (const juce::MouseEvent& event) override
+    {
+        auto duration = transportSource.getLengthInSeconds();
 
+        if (duration > 0.0)
+        {
+            auto clickPosition = event.position.x;
+            auto audioPosition = (clickPosition / (float) getWidth()) * duration;
+
+            transportSource.setPosition (audioPosition);
+        }
+    }
 
 private:
     void timerCallback() override
@@ -59,12 +68,11 @@ private:
         }
         else
         {
-            currentPositionLabel.setText ("Stopped", juce::dontSendNotification);
+            positionString = "Stopped";
         }
     }
 
-    const juce::AudioTransportSource& transportSource;
-    juce::Label currentPositionLabel;
+    juce::AudioTransportSource& transportSource;
     juce::String positionString;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimplePositionOverlay)
 };
