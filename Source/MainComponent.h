@@ -50,8 +50,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "SimpleThumbnailComponent.h"
-#include "SimplePositionOverlay.h"
+#include "ThumbnailComponent.h"
+#include "PositionOverlay.h"
 
 
 //==============================================================================
@@ -118,8 +118,8 @@ private:
     TransportState state;
     // AudioThumbnailCache has to be listed before AudioThumbnail
     juce::AudioThumbnailCache thumbnailCache;
-    SimpleThumbnailComponent thumbnailComp;
-    SimplePositionOverlay positionOverlay;
+    ThumbnailComponent thumbnailComp;
+    PositionOverlay positionOverlay;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

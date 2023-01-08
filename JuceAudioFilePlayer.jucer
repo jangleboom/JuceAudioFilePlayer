@@ -5,18 +5,18 @@
               id="gYzxZn" jucerFormatVersion="1" displaySplashScreen="1">
   <MAINGROUP id="RbAYSN" name="JuceAudioFilePlayer">
     <GROUP id="{59E4BBC5-6B8B-5BA2-36DD-6E138EBF90D2}" name="Source">
-      <FILE id="hmBG6D" name="SimpleThumbnailComponent.h" compile="0" resource="0"
-            file="Source/SimpleThumbnailComponent.h"/>
-      <FILE id="U72yMZ" name="SimpleThumbnailComponent.cpp" compile="1" resource="0"
-            file="Source/SimpleThumbnailComponent.cpp"/>
       <FILE id="jUfN5T" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="s5GO01" name="PositionOverlay.cpp" compile="1" resource="0"
+            file="Source/PositionOverlay.cpp"/>
+      <FILE id="Z2jgc9" name="PositionOverlay.h" compile="0" resource="0"
+            file="Source/PositionOverlay.h"/>
+      <FILE id="iGLB72" name="ThumbnailComponent.cpp" compile="1" resource="0"
+            file="Source/ThumbnailComponent.cpp"/>
+      <FILE id="RrsJFF" name="ThumbnailComponent.h" compile="0" resource="0"
+            file="Source/ThumbnailComponent.h"/>
       <FILE id="iG2ws8" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
       <FILE id="FHlono" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
-      <FILE id="BCPtuI" name="SimplePositionOverlay.cpp" compile="1" resource="0"
-            file="Source/SimplePositionOverlay.cpp"/>
-      <FILE id="PzZhqo" name="SimplePositionOverlay.h" compile="0" resource="0"
-            file="Source/SimplePositionOverlay.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
