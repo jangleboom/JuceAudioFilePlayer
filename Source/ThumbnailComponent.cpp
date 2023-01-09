@@ -44,7 +44,7 @@ void ThumbnailComponent::paintIfFileLoaded (juce::Graphics& g)
 {
     g.fillAll (juce::Colours::darkgrey);
 
-    g.setColour (juce::Colours::red);
+    g.setColour (juce::Colours::darkred);
     thumbnail.drawChannels (g, getLocalBounds(), 0.0, thumbnail.getTotalLength(), 1.0f);
 }
 
@@ -58,7 +58,7 @@ void ThumbnailComponent::paintMonoIfFileLoaded (juce::Graphics& g)
                             0.0,                                    // start time
                             thumbnail.getTotalLength(),             // end time
                             0,
-                            0.8f);                                  // vertical zoom
+                            1.0f);                                  // vertical zoom
 }
 
 void ThumbnailComponent::changeListenerCallback (juce::ChangeBroadcaster* source)

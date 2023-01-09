@@ -29,8 +29,11 @@ void PositionOverlay::paint (juce::Graphics& g)
 
         g.setColour (juce::Colours::green);
         g.drawLine (drawPosition, 0.0f, drawPosition, (float) getHeight(), 2.0f);
+        g.setColour(juce::Colour(0.0f, 0.0f, 0.0f, 0.3f));
+//        g.fillRect(0.0f, 0.0f, drawPosition, (float) getHeight());
+        g.fillRect(drawPosition, 0.0f, (float) getWidth() - drawPosition, (float) getHeight());
     }
-    
+    g.setColour (juce::Colours::white);
     g.drawFittedText (positionString, getLocalBounds(), juce::Justification::centred, 1);
 }
 
@@ -47,8 +50,9 @@ void PositionOverlay::mouseDown (const juce::MouseEvent& event)
     }
 }
 
-void PositionOverlay::timerCallback() 
+void PositionOverlay::timerCallback()
 {
+    static bool stopped = false;
     if (transportSource.isPlaying())
     {
         juce::RelativeTime position (transportSource.getCurrentPosition());
@@ -57,11 +61,19 @@ void PositionOverlay::timerCallback()
         auto seconds = ((int) position.inSeconds()) % 60;
         auto millis  = ((int) position.inMilliseconds()) % 1000;
         positionString = juce::String::formatted ("%02d:%02d:%04d", minutes, seconds, millis);
-
+        stopped = false;
         repaint();
+
     }
     else
     {
-        positionString = "Stopped";
+        if (transportSource.getTotalLength() && !stopped)
+        {
+            positionString = "Stopped";
+            repaint();
+            stopped = true;
+        }
     }
+    
+    
 }
