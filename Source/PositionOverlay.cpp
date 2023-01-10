@@ -41,7 +41,7 @@ void PositionOverlay::mouseDown (const juce::MouseEvent& event)
 {
     auto duration = transportSource.getLengthInSeconds();
 
-    if (duration > 0.0)
+    if (transportSource.isPlaying())
     {
         auto clickPosition = event.position.x;
         auto audioPosition = (clickPosition / (float) getWidth()) * duration;
