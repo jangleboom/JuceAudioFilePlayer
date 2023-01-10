@@ -53,10 +53,10 @@ void PositionOverlay::mouseDown (const juce::MouseEvent& event)
 void PositionOverlay::timerCallback()
 {
     static bool stopped = false;
-    if (transportSource.isPlaying())
+    juce::RelativeTime position (transportSource.getCurrentPosition());
+    
+    if (position.inMilliseconds() > 0)
     {
-        juce::RelativeTime position (transportSource.getCurrentPosition());
-
         auto minutes = ((int) position.inMinutes()) % 60;
         auto seconds = ((int) position.inSeconds()) % 60;
         auto millis  = ((int) position.inMilliseconds()) % 1000;

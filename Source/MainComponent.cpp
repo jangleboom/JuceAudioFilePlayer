@@ -42,7 +42,7 @@ MainComponent::MainComponent()
     addAndMakeVisible (&thumbnailComp);
     addAndMakeVisible (&positionOverlay);
 
-    setSize (600, 400);
+    setSize (400, 400);
 
     formatManager.registerBasicFormats();
     transportSource.addChangeListener (this);
@@ -88,13 +88,13 @@ void MainComponent::resized()
     
     juce::Rectangle<int> thumbnailBounds (20, 280, getWidth() - 40, (int)(getHeight() * 0.5));
 #else
-    openButton          .setBounds      (10, 10,  getWidth() - 20, 20);
-    playButton          .setBounds      (10, 40,  getWidth() - 20, 20);
-    stopButton          .setBounds      (10, 70,  getWidth() - 20, 20);
-    loopingToggle       .setBounds      (10, 100, getWidth() - 20, 20);
-    currentAudioFileNameLabel.setBounds (10, 130, getWidth() - 20, 20);
+    openButton          .setBounds      (10, 20,  getWidth() - 20, 30);
+    playButton          .setBounds      (10, 60,  getWidth() - 20, 30);
+    stopButton          .setBounds      (10, 100,  getWidth() - 20, 30);
+    loopingToggle       .setBounds      (10, 140, getWidth() - 20, 30);
+    currentAudioFileNameLabel.setBounds (10, 170, getWidth() - 20, 30);
     
-    juce::Rectangle<int> thumbnailBounds (10, 160, getWidth() - 20, getHeight() - 180);
+    juce::Rectangle<int> thumbnailBounds (10, 200, getWidth() - 20, getHeight() * 0.45f);
 #endif
     thumbnailComp.setBounds (thumbnailBounds);
     positionOverlay.setBounds (thumbnailBounds);
