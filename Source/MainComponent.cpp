@@ -32,9 +32,6 @@ MainComponent::MainComponent()
     addAndMakeVisible (&loopingToggle);
     loopingToggle.setButtonText ("Loop");
     loopingToggle.onClick = [this] { loopButtonChanged(); };
-
-//    addAndMakeVisible (&currentPositionLabel);
-//    currentPositionLabel.setText ("Stopped", juce::dontSendNotification);
     
     addAndMakeVisible (&currentAudioFileNameLabel);
     currentAudioFileNameLabel.setText ("", juce::dontSendNotification);
@@ -54,6 +51,7 @@ MainComponent::MainComponent()
 MainComponent::~MainComponent() 
 {
     shutdownAudio();
+    transportSource.removeChangeListener(this);
 }
 
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
