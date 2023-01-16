@@ -30,8 +30,8 @@ void PositionOverlay::paint (juce::Graphics& g)
         g.setColour (juce::Colours::green);
         g.drawLine (drawPosition, 0.0f, drawPosition, (float) getHeight(), 2.0f);
         g.setColour(juce::Colour(0.0f, 0.0f, 0.0f, 0.3f));
-//        g.fillRect(0.0f, 0.0f, drawPosition, (float) getHeight());
-        g.fillRect(drawPosition, 0.0f, (float) getWidth() - drawPosition, (float) getHeight());
+        g.fillRect(0.0f, 0.0f, drawPosition, (float) getHeight());
+//        g.fillRect(drawPosition, 0.0f, (float) getWidth() - drawPosition, (float) getHeight());
     }
     g.setColour (juce::Colours::white);
     g.drawFittedText (positionString, getLocalBounds(), juce::Justification::centred, 1);
@@ -41,7 +41,7 @@ void PositionOverlay::mouseDown (const juce::MouseEvent& event)
 {
     auto duration = transportSource.getLengthInSeconds();
 
-    if (transportSource.isPlaying())
+    if (transportSource.getTotalLength() > 0)
     {
         auto clickPosition = event.position.x;
         auto audioPosition = (clickPosition / (float) getWidth()) * duration;

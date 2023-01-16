@@ -13,31 +13,31 @@ MainComponent::MainComponent()
         thumbnailComp (512, formatManager, thumbnailCache),
         positionOverlay (transportSource)
 {
-    addAndMakeVisible (&openButton);
+    addAndMakeVisible (openButton);
     openButton.setButtonText ("Open");
     openButton.onClick = [this] { openButtonClicked(); };
 
-    addAndMakeVisible (&playButton);
+    addAndMakeVisible (playButton);
     playButton.setButtonText ("Play");
     playButton.onClick = [this] { playButtonClicked(); };
     playButton.setColour (juce::TextButton::buttonColourId, juce::Colours::green);
     playButton.setEnabled (false);
 
-    addAndMakeVisible (&stopButton);
+    addAndMakeVisible (stopButton);
     stopButton.setButtonText ("Stop");
     stopButton.onClick = [this] { stopButtonClicked(); };
     stopButton.setColour (juce::TextButton::buttonColourId, juce::Colours::red);
     stopButton.setEnabled (false);
 
-    addAndMakeVisible (&loopingToggle);
+    addAndMakeVisible (loopingToggle);
     loopingToggle.setButtonText ("Loop");
     loopingToggle.onClick = [this] { loopButtonChanged(); };
     
-    addAndMakeVisible (&currentAudioFileNameLabel);
+    addAndMakeVisible (currentAudioFileNameLabel);
     currentAudioFileNameLabel.setText ("", juce::dontSendNotification);
     
-    addAndMakeVisible (&thumbnailComp);
-    addAndMakeVisible (&positionOverlay);
+    addAndMakeVisible (thumbnailComp);
+    addAndMakeVisible (positionOverlay);
 
     setSize (400, 400);
 
